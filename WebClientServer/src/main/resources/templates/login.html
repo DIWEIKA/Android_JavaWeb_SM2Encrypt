@@ -1,0 +1,27 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script>
+        function setCookie(cname, cvalue) {
+            document.cookie = cname + "=" + cvalue + ";";
+        }
+
+        function myFunction() {
+            var Username = document.getElementById("UserName").value;
+
+            setCookie("username",Username);//把username=Username放在cookie里
+        }
+    </script>
+</head>
+<body>
+<form action="/loginForm">
+    username: <input name="username" id="UserName"><br>
+    password: <input name="password" type="password" ><br>
+    <input type="submit" value="登录" onclick="myFunction()"> <!--通过点击事件调用myFunction()方法，从而将username=Username加到cookie中-->
+
+</form>
+</body>
+
+</html>

@@ -1,0 +1,28 @@
+﻿<!--
+Created by IntelliJ IDEA.
+User: DIWEIKA
+Date: 2021/4/12
+Time: 14:59
+这是Web应用客户端的登录失败后的页面
+-->
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+登录失败
+<input type="button" name="Submit" onclick="javascript:history.back(-1);" value="返回上一页"><br>
+
+<script type="javascript">
+    window.history.go(-1);  //返回上一页
+    window.history.back();  //返回上一页
+    //如果要强行刷新的话就是：
+    window.history.back();
+    location.reload();
+    window.location.go(-1); //刷新上一页
+</script>
+
+</html>

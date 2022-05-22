@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+
+    <title>Insert title here</title>
+<!--    <script type="text/javascript">-->
+<!--        //在这里使用javaScript语言发起Ajax请求，访问服务器AjaxServlet中的doGet-->
+<!--        function ajaxRequest() {-->
+<!--            // 1、我们首先要创建XMLHttpRequest-->
+<!--            var xmlhttprequest = new XMLHttpRequest();-->
+<!--            // 2、调用open方法设置请求参数-->
+<!--            xmlhttprequest.open("GET","http://localhost:8080/ajaxServlet?action=doGet",true);-->
+<!--            // 4、在send方法前绑定onreadystatechange事件，处理请求完成后的操作-->
+<!--            xmlhttprequest.onreadystatechange = function () {-->
+<!--                if (xmlhttprequest.readyState == 4 && xmlhttprequest.status == 200){-->
+<!--                    //把响应的数据显示在页面上-->
+<!--                    document.getElementById("div01").innerHTML = xmlhttprequest.responseText;-->
+<!--                }-->
+<!--            }-->
+<!--            // 3、调用send方法发送请求-->
+<!--            xmlhttprequest.send();-->
+
+<!--        }-->
+<!--    </script>-->
+
+    <script>
+        $("#ajaxBtn").click(function () {
+            $.ajax({
+                url:"ajaxServlet",   //请求地址
+                type:"get",   //请求方法
+                data:"",   //要发送的数据,相当于表单提交的数据，json形式。
+                dataType:"text",   //期待返回的数据类型，也可以理解为请求的数据类型
+                error:function () {  //发生错误时的处理
+
+                },
+                success:function (data) {  //成功时的处理。参数表示返回的数据
+                    $("#div01").text(data);
+                }
+            })
+        });
+    </script>
+
+</head>
+<body>
+
+    <button id="ajaxBtn">ajax请求</button>
+    <div id="div01"></div>
+
+</body>
+</html>

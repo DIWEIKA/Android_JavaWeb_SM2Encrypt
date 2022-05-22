@@ -1,0 +1,196 @@
+﻿<!--
+Created by IntelliJ IDEA.
+User: DIWEIKA
+Date: 2021/4/12
+Time: 14:59
+这是Web应用客户端的登录成功后的页面
+-->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Web应用客户端</title>
+
+    <script type="text/javascript" src="//cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+    <script src="//cdn.bootcss.com/jquery/1.11.3/jquery.min.js"></script>
+    <script type="text/javascript" src="//static.runoob.com/assets/qrcode/qrcode.min.js"></script>
+
+
+    <!--刷新页面-->
+    <script>
+        function reloadPage(){
+            location.reload();
+        }
+    </script>
+
+<!--    使用cookie将用户名显示在页面上-->
+    <script>
+        function setCookie(cname,cvalue,exdays) {
+            var d = new Date();
+            d.setTime(d.getTime() + (exdays*24*60*60*1000));
+            var expires = "expires=" + d.toGMTString();
+            document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+        }
+
+        function getCookie(cname) {
+            var name = cname + "=";
+            var decodedCookie = decodeURIComponent(document.cookie);
+            var ca = decodedCookie.split(';');
+            for(var i = 0; i < ca.length; i++) {
+                var c = ca[i];
+                while (c.charAt(0) == ' ') {
+                    c = c.substring(1);
+                }
+                if (c.indexOf(name) == 0) {
+                    return c.substring(name.length, c.length);
+                }
+            }
+            return "";
+        }
+
+        function cookieFun() {
+           var username = getCookie("username");
+           document.getElementById("id01").innerHTML = username;
+        }
+    </script>
+
+
+</head>
+
+<body onload="cookieFun()"> <!--通过onload事件(当前html页面加载完成后的事件)执行cookieFun()-->
+
+<!--这里一定要提交到localhost:8080-->
+<form action="localhost:8080" method="get">
+    <h1 align="center">数据密码处理</h1>
+    <table align="center">
+        <tr>    <!--tr用来定义一行，td用来定义一列-->
+            <td>欢迎您:</td>
+            <td>
+                <div id="id01">用户名字</div> <!--将用户名显示在div上-->
+            </td>
+            <td>SessionId:</td>
+            <td>
+                <div id="id02">这是SessionId</div> <!--将SessionId显示在div上-->
+            </td>
+        </tr>
+        <tr>
+
+        </tr>
+        <tr>
+            <td>请选择何种数据处理:</td>
+            <td>
+                <label><input name="DataHandle" type="radio" value="SM2Encrypt" />加密 </label>
+                <label><input name="DataHandle" type="radio" value="SM2Decrypt" />解密 </label>
+                <label><input name="DataHandle" type="radio" value="SM2Sign" />数字签名</label>
+                <label><input name="DataHandle" type="radio" value="SM2Verify" />签名验证</label>
+            </td>
+        </tr>
+        <tr>
+            <td>需处理的数据:</td>
+            <td><textarea rows="10" cols="30" id="data"></textarea></td>
+        </tr>
+        </tr>
+        <tr>
+            <td>数字签名:</td>
+            <td><textarea rows="10" cols="30" id="signature" value="default">default</textarea></td>
+        </tr>
+
+        <tr>
+            <td><input type="reset" onclick="reloadPage()"></td>
+            <td>
+                <button onclick="onclickFun()">生成二维码</button>
+            </td>
+        </tr>
+
+    </table>
+</form>
+
+<!--当页面加载时，把SessionId显示在表单里-->
+<script>
+    $(document).ready(function () {
+        $.ajax({
+            url:"ajaxServlet",   //请求地址
+            type:"get",   //请求方法
+            data:"",
+            dataType:"text",   //期待返回的数据类型，也可以理解为请求的数据类型
+            error:function () {  //发生错误时的处理
+
+            },
+            success:function (data) {  //成功时的处理。参数表示返回的数据
+                $("#id02").text(data);
+            }
+        })
+    });
+</script>
+
+<!--通过点击生成二维码按钮，执行下列js文件，然后生成一个二维码-->
+<script type="text/javascript">
+    function onclickFun() {
+
+        //获取div标签
+        var qrcode = new QRCode(document.getElementById("qrcode"), {
+            width : 300,
+            height : 300
+        });
+
+        var username = document.getElementById("id01").innerText;//获取username
+        var SessionId = document.getElementById("id02").innerText; //获取SessionId作为IDA
+
+        //下面获取radio标签
+        var datahandle = null;
+        var obj = document.getElementsByName("DataHandle")
+        for (var i = 0; i < obj.length; i++) { //遍历Radio
+            if (obj[i].checked) {
+                datahandle = obj[i].value;
+            }
+        }
+
+        var originaldataobj = document.getElementById("data"); //获取待处理数据标签
+        var signobj = document.getElementById("signature"); //获取数字签名标签
+
+        //将这些数据都组合在一起成为一个字符串。
+        //这些数据分别是：IDA、key、data、dataHandle以及signature（可选）
+        //如果signature有值，则加在dataString里；如果signature无值，则不加在dataString里
+        if(signobj.value!="default"){
+            var dataString ="username="+username+" ID="+SessionId+" data="+originaldataobj.value+" dataHandle="+datahandle+" signature="+signobj.value;
+        }
+        else {
+            var dataString ="username="+username+" ID="+SessionId+" data="+originaldataobj.value+" dataHandle="+datahandle;
+        }
+        qrcode.makeCode(dataString); //生成二维码
+    }
+
+</script>
+
+<!--下面是显示二维码的地方-->
+生成的二维码如下：
+<div id="qrcode"  style="width:100px; height:100px; margin-top:15px;"></div>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+
+</body>
+</html>

@@ -1,0 +1,17 @@
+<resources>
+    <string name="app_name">AndroidMobileClient04</string>
+
+    <string name="hello">Hello World, UserInformationActivity!</string>
+
+
+    <string name="title">name</string>
+
+    <string name="length">age</string>
+
+    <string name="button">save</string>
+
+    <string name="success">Succeeded to save</string>
+
+    <string name="fail">failed to save</string>
+
+</resources>

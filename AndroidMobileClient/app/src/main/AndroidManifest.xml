@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.example.AndroidMobileClient">
+
+    <uses-permission android:name="android.permission.CAMERA" />
+
+    <uses-feature android:name="android.hardware.camera" />
+    <uses-feature android:name="android.hardware.camera.autofocus" />
+
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.QRscanner"
+        android:usesCleartextTraffic="true">
+
+        <service
+            android:name="com.example.AndroidMobileClient.Service.UserInformationService"
+            android:enabled="true"
+            android:exported="true"
+            tools:ignore="Instantiatable"></service>
+
+        <activity android:name="com.example.AndroidMobileClient.Activity.handleActivity" />
+        <activity android:name="com.example.AndroidMobileClient.Activity.MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="com.example.AndroidMobileClient.Activity.CaptureAct"
+            android:screenOrientation="fullSensor"
+            android:stateNotNeeded="true"
+            android:windowSoftInputMode="stateAlwaysHidden" />
+    </application>
+
+    <!--加上网络权限：解决socket failed:EACCES (Permission denied)-->
+    <uses-permission android:name="android.permission.INTERNET" />
+
+</manifest>
